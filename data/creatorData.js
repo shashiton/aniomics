@@ -1,0 +1,80 @@
+export const creatorList = [
+  {
+    id: 1,
+    name: "DUBU",
+    specialty: "Webtoon Artist",
+    description: "Creator of Solo Leveling, one of the most popular webtoons worldwide with millions of dedicated fans.",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face&auto=format",
+    followers: "2.5M",
+    rating: 4.9,
+    verified: true,
+    joinDate: "2018",
+    works: ["Solo Leveling", "The World After the Fall"],
+    socialLinks: ["@dubu_artist", "dubu.art"]
+  },
+  {
+    id: 2,
+    name: "Hajime Isayama",
+    specialty: "Manga Artist",
+    description: "Legendary creator of Attack on Titan, known for complex storytelling and detailed artwork.",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face&auto=format",
+    followers: "5.2M",
+    rating: 4.8,
+    verified: true,
+    joinDate: "2009",
+    works: ["Attack on Titan", "Shingeki no Kyojin"],
+    socialLinks: ["@isayama_hajime", "isayama.official"]
+  },
+  {
+    id: 3,
+    name: "SIU",
+    specialty: "Webtoon Artist",
+    description: "Mastermind behind Tower of God, creating an intricate fantasy world with compelling characters.",
+    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face&auto=format",
+    followers: "3.1M",
+    rating: 4.7,
+    verified: true,
+    joinDate: "2010",
+    works: ["Tower of God", "Talse Uzer Story"],
+    socialLinks: ["@siu_tog", "tower-of-god.com"]
+  },
+  {
+    id: 4,
+    name: "Yongje Park",
+    specialty: "Webtoon Artist",
+    description: "Creator of The God of High School, known for dynamic action sequences and martial arts expertise.",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face&auto=format",
+    followers: "1.8M",
+    rating: 4.6,
+    verified: true,
+    joinDate: "2011",
+    works: ["The God of High School", "Noblesse"],
+    socialLinks: ["@yongje_park", "gohs.official"]
+  },
+  {
+    id: 5,
+    name: "uru-chan",
+    specialty: "Webtoon Artist",
+    description: "Rising star known for UnOrdinary, exploring themes of power and society in a unique superhero setting.",
+    avatar: "https://images.unsplash.com/photo-1494790108755-2616c96285dd?w=100&h=100&fit=crop&crop=face&auto=format",
+    followers: "2.3M",
+    rating: 4.8,
+    verified: true,
+    joinDate: "2016",
+    works: ["UnOrdinary", "ClairVoyance"],
+    socialLinks: ["@uruchanofr", "unordinary.com"]
+  },
+  {
+    id: 6,
+    name: "Gege Akutami",
+    specialty: "Manga Artist",
+    description: "Creator of Jujutsu Kaisen, bringing fresh innovation to the supernatural battle manga genre.",
+    avatar: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=100&h=100&fit=crop&crop=face&auto=format",
+    followers: "4.1M",
+    rating: 4.9,
+    verified: true,
+    joinDate: "2018",
+    works: ["Jujutsu Kaisen", "Tokyo Metropolitan Magic Technical School"],
+    socialLinks: ["@gege_akutami", "jujutsu-kaisen.com"]
+  }
+];
