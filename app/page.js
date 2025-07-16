@@ -1352,7 +1352,7 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                       
                       {/* Ranking Badge */}
-                      <div className="absolute top-4 left-4 bg-gradient-to-r from-[#00FFFF] to-[#0099CC] text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                      <div className="absolute top-4 left-4 bg-gradient-to-r from-[#00FFFF] to-[#0099CC] text-black px-3 py-1 rounded-full text-xs font
                         #{index + 1}
                       </div>
                       
