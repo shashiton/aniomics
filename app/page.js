@@ -908,6 +908,145 @@ export default function Home() {
   const [creatorHubModalOpen, setCreatorHubModalOpen] = useState(false);
   const [marketplaceModalOpen, setMarketplaceModalOpen] = useState(false);
   const [libraryModalOpen, setLibraryModalOpen] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  // API fetching functions
+  const fetchAnimeData = async () => {
+    try {
+      setLoading(true);
+      const query = `
+        query {
+          Page(page: 1, perPage: 20) {
+            media(type: ANIME, sort: TRENDING_DESC) {
+              id
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+                medium
+              }
+              averageScore
+              genres
+              status
+              seasonYear
+              description
+              studios {
+                nodes {
+                  name
+                }
+              }
+              countryOfOrigin
+            }
+          }
+        }
+      `;
+
+      const response = await fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query })
+      });
+
+      const data = await response.json();
+      
+      if (data.data) {
+        const formattedAnime = data.data.Page.media.map(item => ({
+          id: item.id,
+          title: item.title.romaji || item.title.english,
+          image: item.coverImage.large || item.coverImage.medium,
+          rating: item.averageScore ? (item.averageScore / 10).toFixed(1) : '8.5',
+          genre: item.genres.slice(0, 3).join(', '),
+          year: item.seasonYear || 2024,
+          description: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...' : 'No description available.',
+          studio: item.studios.nodes[0]?.name || 'Unknown Studio',
+          status: item.status || 'RELEASING',
+          nationality: item.countryOfOrigin === 'JP' ? 'JP' : item.countryOfOrigin === 'KR' ? 'KR' : item.countryOfOrigin === 'CN' ? 'CN' : 'US'
+        }));
+        
+        setAnimeData(formattedAnime);
+        setLastUpdated(new Date());
+        console.log('✅ Anime data updated from AniList API:', formattedAnime.length, 'items');
+      }
+    } catch (error) {
+      console.error('❌ Error fetching anime data:', error);
+      // Fallback to static data on error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchWebtoonData = async () => {
+    try {
+      const query = `
+        query {
+          Page(page: 1, perPage: 20) {
+            media(type: MANGA, sort: TRENDING_DESC) {
+              id
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+                medium
+              }
+              averageScore
+              genres
+              status
+              startDate {
+                year
+              }
+              description
+              staff {
+                nodes {
+                  name {
+                    full
+                  }
+                }
+              }
+              countryOfOrigin
+            }
+          }
+        }
+      `;
+
+      const response = await fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query })
+      });
+
+      const data = await response.json();
+      
+      if (data.data) {
+        const formattedWebtoons = data.data.Page.media.map(item => ({
+          id: item.id,
+          title: item.title.romaji || item.title.english,
+          image: item.coverImage.large || item.coverImage.medium,
+          rating: item.averageScore ? (item.averageScore / 10).toFixed(1) : '8.5',
+          genre: item.genres.slice(0, 3).join(', '),
+          year: item.startDate?.year || 2024,
+          description: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 150) + '...' : 'No description available.',
+          author: item.staff.nodes[0]?.name.full || 'Unknown Author',
+          status: item.status || 'RELEASING',
+          nationality: item.countryOfOrigin === 'KR' ? 'KR' : item.countryOfOrigin === 'JP' ? 'JP' : item.countryOfOrigin === 'CN' ? 'CN' : 'US'
+        }));
+        
+        setWebtoonData(formattedWebtoons);
+        setLastUpdated(new Date());
+        console.log('✅ Webtoon data updated from AniList API:', formattedWebtoons.length, 'items');
+      }
+    } catch (error) {
+      console.error('❌ Error fetching webtoon data:', error);
+      // Fallback to static data on error
+    }
+  };
 
   useEffect(() => {
     // Handle preloader
@@ -915,11 +1054,23 @@ export default function Home() {
       setShowPreloader(false);
     }, 2000);
 
-    // Data is loaded from static files on component mount
-    console.log('Using static data files. Anime count:', animeData.length, 'Webtoon count:', webtoonData.length);
+    // Initial data fetch
+    fetchAnimeData();
+    fetchWebtoonData();
 
-    return () => clearTimeout(preloaderTimer);
-  }, [animeData.length, webtoonData.length]);
+    // Set up hourly updates (every 3600000ms = 1 hour)
+    const updateInterval = setInterval(() => {
+      console.log('🔄 Hourly update triggered - fetching latest data...');
+      fetchAnimeData();
+      fetchWebtoonData();
+    }, 3600000); // 1 hour = 60 * 60 * 1000 = 3600000ms
+
+    // Cleanup function
+    return () => {
+      clearTimeout(preloaderTimer);
+      clearInterval(updateInterval);
+    };
+  }, []); // Empty dependency array to run only once on mount
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1002,6 +1153,12 @@ export default function Home() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserEmail('');
+  };
+
+  // Manual refresh function
+  const handleManualRefresh = async () => {
+    console.log('🔄 Manual refresh triggered');
+    await Promise.all([fetchAnimeData(), fetchWebtoonData()]);
   };
 
   const getCurrentData = () => {
@@ -1293,6 +1450,23 @@ export default function Home() {
                 {searchQuery ? `Found ${getCurrentData().length} ${activeTab === 'anime' ? 'anime' : 'comics'} matching your search` : 
                  (activeTab === 'anime' ? 'Real-time data powered by AniList • Updated every hour' : 'Real-time data powered by AniList • Updated every hour')}
               </p>
+              {!searchQuery && (
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <p className="text-white/40 text-sm">
+                    Last updated: {lastUpdated.toLocaleTimeString()}
+                  </p>
+                  <button
+                    onClick={handleManualRefresh}
+                    className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg px-4 py-2 text-white/80 hover:text-white transition-all duration-300 flex items-center gap-2 text-sm"
+                    disabled={loading}
+                  >
+                    <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    {loading ? 'Updating...' : 'Refresh Now'}
+                  </button>
+                </div>
+              )}
             </div>
 
             {loading ? (
@@ -1352,7 +1526,7 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                       
                       {/* Ranking Badge */}
-                      <div className="absolute top-4 left-4 bg-gradient-to-r from-[#00FFFF] to-[#0099CC] text-black px-3 py-1 rounded-full text-xs font
+                      <div className="absolute top-4 left-4 bg-gradient-to-r from-[#00FFFF] to-[#0099CC] text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
                         #{index + 1}
                       </div>
                       
