@@ -1,24 +1,46 @@
-// Anime data for the Aniomics website
+// Enhanced Anime data for the Aniomics website with comprehensive AniList-compatible structure
 export const animeList = [
   {
-    id: 'anime_1',
+    id: 16498,
     title: 'Attack on Titan',
+    titleEnglish: 'Attack on Titan',
+    titleNative: '進撃の巨人',
     description: 'Humanity fights for survival against giant humanoid Titans that have brought civilization to the brink of extinction. The story follows Eren Yeager and his friends as they join the military to fight these monstrous beings.',
+    fullDescription: 'Several hundred years ago, humans were nearly exterminated by Titans. Titans are typically several stories tall, seem to have no intelligence, devour human beings and, worst of all, seem to do it for the pleasure rather than as a food source.',
     image: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-73IhOXpJZiMF.jpg',
-    rating: '90/100',
+    bannerImage: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/16498-8jpFCOcDmneX.jpg',
+    rating: '9.0',
+    meanScore: 90,
+    popularity: 654235,
     genre: 'Action, Drama, Fantasy',
+    genres: ['Action', 'Drama', 'Fantasy', 'Military'],
     studio: 'Studio Pierrot',
-    nationality: 'JP'
+    nationality: 'JP',
+    year: 2013,
+    format: 'TV',
+    episodes: 25,
+    status: 'FINISHED'
   },
   {
-    id: 'anime_2',
+    id: 101922,
     title: 'Demon Slayer',
+    titleEnglish: 'Demon Slayer: Kimetsu no Yaiba',
+    titleNative: '鬼滅の刃',
     description: 'A young boy becomes a demon slayer to save his sister and avenge his family. Tanjiro Kamado joins the Demon Slayer Corps to turn his sister back into a human and defeat the demon who killed his family.',
+    fullDescription: 'It is the Taisho Period in Japan. Tanjiro, a kindhearted boy who sells charcoal for a living, finds his family slaughtered by a demon. To make matters worse, his younger sister Nezuko, the sole survivor, has been transformed into a demon herself.',
     image: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-PEn1CTc93blC.jpg',
-    rating: '88/100',
+    bannerImage: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/101922-YfZhKBUDDS6L.jpg',
+    rating: '8.8',
+    meanScore: 88,
+    popularity: 425678,
     genre: 'Action, Supernatural, Historical',
+    genres: ['Action', 'Supernatural', 'Historical', 'Shounen'],
     studio: 'Ufotable',
-    nationality: 'JP'
+    nationality: 'JP',
+    year: 2019,
+    format: 'TV',
+    episodes: 26,
+    status: 'FINISHED'
   },
   {
     id: 'anime_3',
